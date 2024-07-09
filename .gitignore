@@ -2,3 +2,6 @@
 *.iml
 target
 *.db
+.mvn
+mvnw
+mvnw.cmd
