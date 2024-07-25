@@ -7,6 +7,9 @@ import ru.job4j.cinema.model.Hall;
 import java.time.LocalDateTime;
 
 public class FilmSessionDto {
+
+    private int id;
+    private int fileId;
     private String filmName;
     private String filmDescription;
     private LocalDateTime startTime;
@@ -17,6 +20,7 @@ public class FilmSessionDto {
     private int placeCount;
 
     public FilmSessionDto(Film film, FilmSession filmSession, Hall hall) {
+        this.id = filmSession.getId();
         this.filmName = film.getName();
         this.filmDescription = film.getDescription();
         this.startTime = filmSession.getStartTime();
