@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import ru.job4j.cinema.model.User;
-import ru.job4j.cinema.service.FilmService;
 import ru.job4j.cinema.service.FilmSessionService;
 
 import javax.annotation.concurrent.ThreadSafe;
@@ -39,7 +38,7 @@ public class FilmSessionController {
         var filmSessionOptional = filmSessionService.findById(id);
         if (filmSessionOptional.isEmpty()) {
             model.addAttribute("message", "Киносеанс с указанным идентификатором не найден.");
-            return "errors/404";
+            return "templates/errors/404";
         }
         var user = (User) session.getAttribute("user");
         if (user == null) {
@@ -47,7 +46,6 @@ public class FilmSessionController {
             user.setFullName("Гость");
         }
         model.addAttribute("user", user);
-        //   model.addAttribute("cities", cityService.findAll());
         model.addAttribute("filmsession", filmSessionOptional.get());
         return "filmsessions/one";
     }

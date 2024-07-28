@@ -35,4 +35,9 @@ public class SimpleTicketService implements TicketService {
     public Collection<Ticket> findAll() {
         return ticketRepository.findAll();
     }
+
+    @Override
+    public Optional<Ticket> findTicketByRowAndPlace(int sessionId, int rowNumber, int placeNumber) {
+        return ticketRepository.findTicketByRowAndPlace(sessionId, rowNumber, placeNumber);
+    }
 }

@@ -14,4 +14,6 @@ public interface TicketRepository {
     Optional<Ticket> findById(int id);
 
     Collection<Ticket> findAll();
+
+    Optional<Ticket> findTicketByRowAndPlace(int sessionId, int rowNumber, int placeNumber);
 }

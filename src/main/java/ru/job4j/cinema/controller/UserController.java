@@ -1,5 +1,6 @@
 package ru.job4j.cinema.controller;
 
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -43,7 +44,7 @@ public class UserController {
                 model.addAttribute("message", "Пользователь с такой почтой уже существует");
                 return "errors/404";
             }
-            return "redirect:/films";
+            return "redirect:/filmsessions";
         } catch (Exception exception) {
             model.addAttribute("message", exception.getMessage());
             return "errors/404";

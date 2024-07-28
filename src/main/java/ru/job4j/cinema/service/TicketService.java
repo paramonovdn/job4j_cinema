@@ -15,4 +15,6 @@ public interface TicketService {
 
     Collection<Ticket> findAll();
 
+    Optional<Ticket> findTicketByRowAndPlace(int sessionId, int rowNumber, int placeNumber);
+
 }

@@ -39,7 +39,7 @@ public class FilmController {
         var filmOptional = filmService.findById(id);
         if (filmOptional.isEmpty()) {
             model.addAttribute("message", "Фильм с указанным идентификатором не найден.");
-            return "errors/404";
+            return "templates/errors/404";
         }
         var user = (User) session.getAttribute("user");
         if (user == null) {
@@ -47,7 +47,6 @@ public class FilmController {
             user.setFullName("Гость");
         }
         model.addAttribute("user", user);
-        //   model.addAttribute("cities", cityService.findAll());
         model.addAttribute("film", filmOptional.get());
         return "films/one";
     }
