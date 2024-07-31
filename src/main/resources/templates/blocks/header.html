@@ -8,12 +8,12 @@
                     <a class="nav-item nav-link" th:href="@{/filmsessions}">Расписание сеансов</a>
                     <a class="nav-item nav-link" th:href="@{/films}">Кинотека</a>
                 </div>
-                <div class="d-flex" th:if="${user.name == 'Гость'}">
+                <div class="d-flex" th:if="${user.fullName == 'Гость'}">
                     <a class="nav-link text-secondary me-3" th:href="@{/users/register}">Регистрация</a>
                     <a class="nav-link text-secondary" th:href="@{/users/login}">Войти</a>
                 </div>
-                <div class="d-flex" th:if="${user.getFullName() != 'Гость'}">
-                    <a class="nav-link text-secondary me-3" href="#" th:text="${user.name}"></a>
+                <div class="d-flex" th:if="${user.fullName != 'Гость'}">
+                    <a class="nav-link text-secondary me-3" href="#" th:text="${user.fullName}"></a>
                     <a class="nav-link text-secondary" th:href="@{/users/logout}">Выйти</a>
                 </div>
             </div>

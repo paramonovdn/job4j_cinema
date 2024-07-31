@@ -74,7 +74,7 @@ public class UserController {
             }
             var session = request.getSession();
             session.setAttribute("user", userOptional.get());
-            return "redirect:/films";
+            return "redirect:/filmsessions";
         } catch (Exception exception) {
             model.addAttribute("message", exception.getMessage());
             return "errors/404";

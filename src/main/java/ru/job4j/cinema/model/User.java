@@ -18,6 +18,7 @@ public class User {
     private String password;
 
     public User() {
+
     }
 
     public User(int id, String fullName, String email, String password) {
@@ -74,5 +75,15 @@ public class User {
     @Override
     public int hashCode() {
         return Objects.hash(id);
+    }
+
+    @Override
+    public String toString() {
+        return "User{"
+                + "id=" + id
+                + ", fullName='" + fullName + '\''
+                + ", email='" + email + '\''
+                + ", password='" + password + '\''
+                + '}';
     }
 }

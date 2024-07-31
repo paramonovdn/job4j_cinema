@@ -53,9 +53,8 @@ public class Sql2oUserRepository implements UserReposytory {
         try (var connection = sql2o.open()) {
             var query = connection.createQuery("SELECT * FROM users WHERE email = :email AND "
                     + "password = :password");
-            var user = query.addParameter("email", email)
-                    .addParameter("password", password)
-                    .executeAndFetchFirst(User.class);
+            query.addParameter("email", email).addParameter("password", password);
+            var user = query.setColumnMappings(User.COLUMN_MAPPING).executeAndFetchFirst(User.class);
             return Optional.ofNullable(user);
         }
     }
