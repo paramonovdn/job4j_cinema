@@ -29,7 +29,7 @@ public class FilmDto {
         this.description = film.getDescription();
         this.year = film.getYear();
         this.minimalAge = film.getMinimalAge();
-        this.durationInMinutes = film.getDurationInMinute();
+        this.durationInMinutes = film.getDurationInMinutes();
         this.genre = genre.getName();
     }
 

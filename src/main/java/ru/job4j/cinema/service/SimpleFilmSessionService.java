@@ -56,7 +56,7 @@ public class SimpleFilmSessionService implements FilmSessionService {
         var filmSessions = filmSessionRepository.findAll();
         var filmSessionsDto = new ArrayList<FilmSessionDto>();
         for (FilmSession session : filmSessions) {
-            filmSessionsDto.add(new FilmSessionDto(filmRepository.findById(session.getId()).get(), session, hallRepository.findById(session.getId()).get()));
+            filmSessionsDto.add(new FilmSessionDto(filmRepository.findById(session.getFilmId()).get(), session, hallRepository.findById(session.getHallsId()).get()));
         }
         return filmSessionsDto;
     }

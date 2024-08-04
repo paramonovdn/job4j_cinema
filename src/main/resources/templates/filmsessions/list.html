@@ -15,7 +15,6 @@
 <div class="container-fluid p-0">
     <header th:insert="blocks/header :: header"></header>
     <div class="container">
-        <input type="hidden" name="fileId" th:field="*{fileId}">
         <div class="row">
             <table class="table">
                 <thead>
@@ -33,12 +32,12 @@
                 <tbody>
                 <tr th:each="filmsessiondto: ${filmsessionsdto}">
                     <td th:text="${filmsessiondto.id}" />
-                    <img th:src="@{/files/{fileId}(fileId=*{filmsessiondto.fileId})}" class="w-100" alt="No image">
-                    <td><a th:text="${filmsessiondto.filmName}" th:href="@{/candidates/{candidateId}(candidateId=${candidate.id})}"></a></td>
+                    <td><img th:src="@{/files/{fileId}(fileId=*{filmsessiondto.fileId})}" class="w-100" alt="No image"> </td>
+                    <td><a th:text="${filmsessiondto.filmName}" th:href="@{/filmsessionsdto/{filmsessiondtoFilmName}(filmsessiondtoFilmName=${filmsessiondto.filmName})}"></a></td>
                     <td th:text="${filmsessiondto.filmDescription}"/>
                     <td th:text="${filmsessiondto.startTime}" />
                     <td th:text="${filmsessiondto.endTime}" />
-                    <td th:text="${filmsessiondto.price}" />
+                    <td th:text="${filmsessiondto.price} + ' рублей'"/>
                     <td th:text="${filmsessiondto.hallName}" />
                 </tr>
                 </tbody>

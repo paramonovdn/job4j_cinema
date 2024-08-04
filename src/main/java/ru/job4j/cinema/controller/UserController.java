@@ -44,7 +44,7 @@ public class UserController {
                 model.addAttribute("message", "Пользователь с такой почтой уже существует");
                 return "errors/404";
             }
-            return "redirect:/filmsessions";
+            return "redirect:/index";
         } catch (Exception exception) {
             model.addAttribute("message", exception.getMessage());
             return "errors/404";
@@ -74,7 +74,7 @@ public class UserController {
             }
             var session = request.getSession();
             session.setAttribute("user", userOptional.get());
-            return "redirect:/filmsessions";
+            return "redirect:/index";
         } catch (Exception exception) {
             model.addAttribute("message", exception.getMessage());
             return "errors/404";

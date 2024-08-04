@@ -31,7 +31,7 @@ public class Sql2oFilmRepository implements FilmRepository {
                     .addParameter("year", film.getYear())
                     .addParameter("genreId", film.getGenreId())
                     .addParameter("minimalAge", film.getMinimalAge())
-                    .addParameter("durationInMinutes", film.getDurationInMinute())
+                    .addParameter("durationInMinutes", film.getDurationInMinutes())
                     .addParameter("fileId", film.getFileId());
             int generatedId = query.executeUpdate().getKey(Integer.class);
             film.setId(generatedId);
@@ -64,7 +64,7 @@ public class Sql2oFilmRepository implements FilmRepository {
                     .addParameter("year", film.getYear())
                     .addParameter("genreId", film.getId())
                     .addParameter("minimalAge", film.getMinimalAge())
-                    .addParameter("durationInMinutes", film.getDurationInMinute())
+                    .addParameter("durationInMinutes", film.getDurationInMinutes())
                     .addParameter("fileId", film.getFileId())
                     .addParameter("Id", film.getId());
             var affectedRows = query.executeUpdate().getResult();
@@ -86,7 +86,7 @@ public class Sql2oFilmRepository implements FilmRepository {
     public Collection<Film> findAll() {
         try (var connection = sql2o.open()) {
             var query = connection.createQuery("SELECT * FROM films");
-            return query.executeAndFetch(Film.class);
+            return query.setColumnMappings(Film.COLUMN_MAPPING).executeAndFetch(Film.class);
         }
     }
 }

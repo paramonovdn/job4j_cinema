@@ -21,6 +21,7 @@ public class FilmSessionDto {
 
     public FilmSessionDto(Film film, FilmSession filmSession, Hall hall) {
         this.id = filmSession.getId();
+        this.fileId = film.getFileId();
         this.filmName = film.getName();
         this.filmDescription = film.getDescription();
         this.startTime = filmSession.getStartTime();
@@ -31,7 +32,9 @@ public class FilmSessionDto {
         this.placeCount = hall.getPlaceCount();
     }
 
-    public FilmSessionDto(String filmName, String filmDescription, LocalDateTime startTime, LocalDateTime endTime, int price, String hallName, int rowCount, int placeCount) {
+    public FilmSessionDto(int id, int fileId, String filmName, String filmDescription, LocalDateTime startTime, LocalDateTime endTime, int price, String hallName, int rowCount, int placeCount) {
+        this.id = id;
+        this.fileId = fileId;
         this.filmName = filmName;
         this.filmDescription = filmDescription;
         this.startTime = startTime;
@@ -40,6 +43,22 @@ public class FilmSessionDto {
         this.hallName = hallName;
         this.rowCount = rowCount;
         this.placeCount = placeCount;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getFileId() {
+        return fileId;
+    }
+
+    public void setFileId(int fileId) {
+        this.fileId = fileId;
     }
 
     public String getFilmName() {

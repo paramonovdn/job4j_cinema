@@ -30,7 +30,7 @@ public class FilmController {
             user.setFullName("Гость");
         }
         model.addAttribute("user", user);
-        model.addAttribute("films", filmService.findAll());
+        model.addAttribute("filmsdto", filmService.findAll());
         return "films/list";
     }
 

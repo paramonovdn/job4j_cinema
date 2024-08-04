@@ -29,7 +29,7 @@ public class FilmSessionController {
             user.setFullName("Гость");
         }
         model.addAttribute("user", user);
-        model.addAttribute("filmsessions", filmSessionService.findAll());
+        model.addAttribute("filmsessionsdto", filmSessionService.findAll());
         return "filmsessions/list";
     }
 
