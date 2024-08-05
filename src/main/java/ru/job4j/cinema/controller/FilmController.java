@@ -24,12 +24,6 @@ public class FilmController {
 
     @GetMapping
     public String getAll(Model model, HttpSession session) {
-        var user = (User) session.getAttribute("user");
-        if (user == null) {
-            user = new User();
-            user.setFullName("Гость");
-        }
-        model.addAttribute("user", user);
         model.addAttribute("filmsdto", filmService.findAll());
         return "films/list";
     }

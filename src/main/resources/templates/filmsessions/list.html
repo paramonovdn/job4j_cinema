@@ -39,6 +39,7 @@
                     <td th:text="${filmsessiondto.endTime}" />
                     <td th:text="${filmsessiondto.price} + ' рублей'"/>
                     <td th:text="${filmsessiondto.hallName}" />
+                    <td><div class="col-6"><a class="btn btn-danger w-200" th:href="@{/filmsessions/{filmsessionId}(filmsessionId=${filmsessiondto.id})}">Купить билет</a></div></td>
                 </tr>
                 </tbody>
             </table>

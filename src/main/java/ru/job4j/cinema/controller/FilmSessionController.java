@@ -23,12 +23,6 @@ public class FilmSessionController {
 
     @GetMapping
     public String getAll(Model model, HttpSession session) {
-        var user = (User) session.getAttribute("user");
-        if (user == null) {
-            user = new User();
-            user.setFullName("Гость");
-        }
-        model.addAttribute("user", user);
         model.addAttribute("filmsessionsdto", filmSessionService.findAll());
         return "filmsessions/list";
     }

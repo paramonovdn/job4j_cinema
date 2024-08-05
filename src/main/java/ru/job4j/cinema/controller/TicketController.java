@@ -2,11 +2,15 @@ package ru.job4j.cinema.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+import ru.job4j.cinema.dto.FilmSessionDto;
 import ru.job4j.cinema.model.Ticket;
 import ru.job4j.cinema.model.User;
+import ru.job4j.cinema.repository.FilmRepository;
+import ru.job4j.cinema.repository.FilmSessionRepository;
+import ru.job4j.cinema.service.FilmService;
+import ru.job4j.cinema.service.FilmSessionService;
+import ru.job4j.cinema.service.HallService;
 import ru.job4j.cinema.service.TicketService;
 
 import javax.annotation.concurrent.ThreadSafe;
@@ -18,9 +22,17 @@ import javax.servlet.http.HttpSession;
 public class TicketController {
 
     private final TicketService ticketService;
+    private final FilmSessionRepository filmSessionRepository;
 
-    public TicketController(TicketService ticketService) {
+    private final FilmRepository filmRepository;
+    private final HallService hallService;
+
+    public TicketController(TicketService ticketService, FilmSessionRepository filmSessionRepository, FilmRepository filmRepository,
+                            HallService hallService) {
         this.ticketService = ticketService;
+        this.filmSessionRepository = filmSessionRepository;
+        this.filmRepository = filmRepository;
+        this.hallService = hallService;
     }
 
     @PostMapping("/buy")
@@ -49,6 +61,18 @@ public class TicketController {
             model.addAttribute("message", exception.getMessage());
             return "errors/404";
         }
+    }
+
+    @GetMapping("/{buy}")
+    public String getBuyPage(Model model, @PathVariable int id) {
+        var filmSessionOptional = filmSessionRepository.findById(id);
+        if (filmSessionOptional.isEmpty()) {
+            model.addAttribute("message", "Киносеанс с данным идентификатором не найден.");
+            return "errors/404";
+        }
+        model.addAttribute("filmsessiondto", new FilmSessionDto(filmRepository.findById(id).get(), filmSessionOptional.get(),
+                hallService.findById(id).get()));
+        return "tickets/buy";
     }
 
 }
