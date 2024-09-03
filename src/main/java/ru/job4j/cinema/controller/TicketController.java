@@ -23,7 +23,6 @@ public class TicketController {
 
     private final TicketService ticketService;
     private final FilmSessionRepository filmSessionRepository;
-
     private final FilmRepository filmRepository;
     private final HallService hallService;
 
@@ -48,8 +47,8 @@ public class TicketController {
             model.addAttribute("user", user);
             var ticketOptional = ticketService.findTicketByRowAndPlace(ticket.getSessionId(), ticket.getRowNumber(),
                     ticket.getPlaceNumber());
-            if (ticketOptional.isPresent()) {
-                model.addAttribute("message", "Не удалось приобрести билет на заданное место. "
+            if (!ticketOptional.isEmpty()) {
+                model.addAttribute("message", "Не удалось приобрести билет на выбранное место. "
                         + "Вероятно оно уже занято. Перейдите на страницу бронирования билетов и попробуйте снова.");
                 return "errors/404";
             }
@@ -62,17 +61,4 @@ public class TicketController {
             return "errors/404";
         }
     }
-
-    @GetMapping("/{buy}")
-    public String getBuyPage(Model model, @PathVariable int id) {
-        var filmSessionOptional = filmSessionRepository.findById(id);
-        if (filmSessionOptional.isEmpty()) {
-            model.addAttribute("message", "Киносеанс с данным идентификатором не найден.");
-            return "errors/404";
-        }
-        model.addAttribute("filmsessiondto", new FilmSessionDto(filmRepository.findById(id).get(), filmSessionOptional.get(),
-                hallService.findById(id).get()));
-        return "tickets/buy";
-    }
-
 }

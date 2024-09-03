@@ -33,7 +33,7 @@
                 <tr th:each="filmsessiondto: ${filmsessionsdto}">
                     <td th:text="${filmsessiondto.id}" />
                     <td><img th:src="@{/files/{fileId}(fileId=*{filmsessiondto.fileId})}" class="w-100" alt="No image"> </td>
-                    <td><a th:text="${filmsessiondto.filmName}" th:href="@{/filmsessionsdto/{filmsessiondtoFilmName}(filmsessiondtoFilmName=${filmsessiondto.filmName})}"></a></td>
+                    <td><a th:text="${filmsessiondto.filmName}" th:href="@{/filmsessions/{filmsessionId}(filmsessionId=${filmsessiondto.id})}"></a></td>
                     <td th:text="${filmsessiondto.filmDescription}"/>
                     <td th:text="${filmsessiondto.startTime}" />
                     <td th:text="${filmsessiondto.endTime}" />

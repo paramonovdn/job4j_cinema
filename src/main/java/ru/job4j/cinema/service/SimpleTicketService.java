@@ -12,8 +12,8 @@ import java.util.Optional;
 public class SimpleTicketService implements TicketService {
     private final TicketRepository ticketRepository;
 
-    public SimpleTicketService(TicketRepository ticketRepository) {
-        this.ticketRepository = ticketRepository;
+    public SimpleTicketService(TicketRepository sqlo2TicketRepository) {
+        this.ticketRepository = sqlo2TicketRepository;
     }
 
     @Override

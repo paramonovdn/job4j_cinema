@@ -10,6 +10,9 @@ import ru.job4j.cinema.service.FilmSessionService;
 
 import javax.annotation.concurrent.ThreadSafe;
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.IntStream;
 
 @Controller
 @RequestMapping("/filmsessions")
@@ -30,6 +33,8 @@ public class FilmSessionController {
     @GetMapping("/{id}")
     public String getById(Model model, @PathVariable int id, HttpSession session) {
         var filmSessionOptional = filmSessionService.findById(id);
+        List<Integer> places = IntStream.rangeClosed(1, filmSessionOptional.get().getPlaceCount()).boxed().toList();
+        List<Integer> rows = IntStream.rangeClosed(1, filmSessionOptional.get().getRowCount()).boxed().toList();
         if (filmSessionOptional.isEmpty()) {
             model.addAttribute("message", "Киносеанс с указанным идентификатором не найден.");
             return "templates/errors/404";
@@ -40,7 +45,9 @@ public class FilmSessionController {
             user.setFullName("Гость");
         }
         model.addAttribute("user", user);
-        model.addAttribute("filmsession", filmSessionOptional.get());
+        model.addAttribute("filmsessiondto", filmSessionOptional.get());
+        model.addAttribute("rows", rows);
+        model.addAttribute("places", places);
         return "filmsessions/one";
     }
 }

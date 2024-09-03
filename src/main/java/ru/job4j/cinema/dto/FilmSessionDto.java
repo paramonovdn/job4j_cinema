@@ -45,6 +45,10 @@ public class FilmSessionDto {
         this.placeCount = placeCount;
     }
 
+    public FilmSessionDto() {
+
+    }
+
     public int getId() {
         return id;
     }

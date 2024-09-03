@@ -28,20 +28,4 @@ public class FilmController {
         return "films/list";
     }
 
-    @GetMapping("/{id}")
-    public String getById(Model model, @PathVariable int id, HttpSession session) {
-        var filmOptional = filmService.findById(id);
-        if (filmOptional.isEmpty()) {
-            model.addAttribute("message", "Фильм с указанным идентификатором не найден.");
-            return "templates/errors/404";
-        }
-        var user = (User) session.getAttribute("user");
-        if (user == null) {
-            user = new User();
-            user.setFullName("Гость");
-        }
-        model.addAttribute("user", user);
-        model.addAttribute("film", filmOptional.get());
-        return "films/one";
-    }
 }

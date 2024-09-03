@@ -44,10 +44,9 @@ public class SimpleFilmSessionService implements FilmSessionService {
 
     @Override
     public Optional<FilmSessionDto> findById(int id) {
-        var film = filmRepository.findById(id).get();
         var filmSession = filmSessionRepository.findById(id).get();
-        var hall = hallRepository.findById(id).get();
-
+        var film = filmRepository.findById(filmSession.getFilmId()).get();
+        var hall = hallRepository.findById(filmSession.getHallsId()).get();
         return Optional.ofNullable(new FilmSessionDto(film, filmSession, hall));
     }
 

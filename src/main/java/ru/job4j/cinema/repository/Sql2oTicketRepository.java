@@ -23,10 +23,10 @@ public class Sql2oTicketRepository implements TicketRepository {
         try (var connection = sql2o.open()) {
             var sql = """
                       INSERT INTO tickets(session_id, row_number, place_number, user_id)
-                      VALUES (:sessioId, :rowNumber, :placeNumber, :userId)
+                      VALUES (:sessionId, :rowNumber, :placeNumber, :userId)
                       """;
             var query = connection.createQuery(sql, true)
-                    .addParameter("sessioId", ticket.getSessionId())
+                    .addParameter("sessionId", ticket.getSessionId())
                     .addParameter("rowNumber", ticket.getRowNumber())
                     .addParameter("placeNumber", ticket.getPlaceNumber())
                     .addParameter("userId", ticket.getUserId());
@@ -62,7 +62,7 @@ public class Sql2oTicketRepository implements TicketRepository {
     @Override
     public Collection<Ticket> findAll() {
         try (var connection = sql2o.open()) {
-            var query = connection.createQuery("SELECT * FROM vacancies");
+            var query = connection.createQuery("SELECT * FROM tickets");
             return query.setColumnMappings(Ticket.COLUMN_MAPPING).executeAndFetch(Ticket.class);
         }
     }
@@ -71,12 +71,12 @@ public class Sql2oTicketRepository implements TicketRepository {
     public Optional<Ticket> findTicketByRowAndPlace(int sessionId, int rowNumber, int placeNumber) {
         try (var connection = sql2o.open()) {
             var query = connection.createQuery("SELECT * FROM tickets WHERE session_id = :sessionId AND "
-                    + "row_number = :rowNumber AND place_number := placeNumber");
-            var user = query.addParameter("sessionId", sessionId)
+                    + "row_number = :rowNumber AND place_number = :placeNumber");
+            query.addParameter("sessionId", sessionId)
                     .addParameter("rowNumber", rowNumber)
-                    .addParameter("placeNumber", placeNumber)
-                    .executeAndFetchFirst(Ticket.class);
-            return Optional.ofNullable(user);
+                    .addParameter("placeNumber", placeNumber);
+            var ticket = query.setColumnMappings(Ticket.COLUMN_MAPPING).executeAndFetchFirst(Ticket.class);
+            return Optional.ofNullable(ticket);
         }
     }
 }
