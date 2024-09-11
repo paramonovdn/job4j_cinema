@@ -88,4 +88,11 @@ public class FilmDto {
     public void setGenre(String genre) {
         this.genre = genre;
     }
+
+    @Override
+    public String toString() {
+        return "FilmDto{" + "id=" + id + ", name='" + name + '\'' + ", description='" + description + '\''
+                + ", year=" + year + ", minimalAge=" + minimalAge + ", durationInMinutes=" + durationInMinutes
+                + ", genre='" + genre + '\'' + '}';
+    }
 }

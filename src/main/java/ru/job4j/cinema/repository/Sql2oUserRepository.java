@@ -63,7 +63,7 @@ public class Sql2oUserRepository implements UserReposytory {
     public Collection<User> findAll() {
         try (var connection = sql2o.open()) {
             var query = connection.createQuery("SELECT * FROM users");
-            return query.executeAndFetch(User.class);
+            return query.setColumnMappings(User.COLUMN_MAPPING).executeAndFetch(User.class);
         }
     }
 }

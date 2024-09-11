@@ -29,25 +29,23 @@ public class SimpleFilmSessionService implements FilmSessionService {
 
     @Override
     public FilmSession save(FilmSession filmSession) {
-        return null;
+        return filmSessionRepository.save(filmSession);
     }
 
     @Override
     public boolean deleteById(int id) {
-        return false;
-    }
-
-    @Override
-    public boolean update(FilmSession filmSession) {
-        return false;
+        return filmSessionRepository.deleteById(id);
     }
 
     @Override
     public Optional<FilmSessionDto> findById(int id) {
-        var filmSession = filmSessionRepository.findById(id).get();
-        var film = filmRepository.findById(filmSession.getFilmId()).get();
-        var hall = hallRepository.findById(filmSession.getHallsId()).get();
-        return Optional.ofNullable(new FilmSessionDto(film, filmSession, hall));
+        var filmSession = filmSessionRepository.findById(id);
+        if (filmSession.isEmpty()) {
+            return Optional.empty();
+        }
+        var film = filmRepository.findById(filmSession.get().getFilmId()).get();
+        var hall = hallRepository.findById(filmSession.get().getHallsId()).get();
+        return Optional.ofNullable(new FilmSessionDto(film, filmSession.get(), hall));
     }
 
     @Override

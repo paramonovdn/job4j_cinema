@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 import org.sql2o.Sql2o;
 import ru.job4j.cinema.model.File;
 
+import java.util.Collection;
 import java.util.Optional;
 @Repository
 public class Sql2oFileRepository implements FileRepository {
@@ -26,7 +27,7 @@ public class Sql2oFileRepository implements FileRepository {
                       """;
             var query = connection.createQuery(sql, true)
                     .addParameter("name", file.getName())
-                    .addParameter("fileId", file.getPath());
+                    .addParameter("path", file.getPath());
             int generatedId = query.executeUpdate().getKey(Integer.class);
             file.setId(generatedId);
             return file;
@@ -48,6 +49,14 @@ public class Sql2oFileRepository implements FileRepository {
         try (var connection = sql2o.open()) {
             var query = connection.createQuery("DELETE FROM files WHERE id = :id");
             query.addParameter("id", id).executeUpdate();
+        }
+    }
+
+    @Override
+    public Collection<File> findAll() {
+        try (var connection = sql2o.open()) {
+            var query = connection.createQuery("SELECT * FROM files");
+            return query.executeAndFetch(File.class);
         }
     }
 }

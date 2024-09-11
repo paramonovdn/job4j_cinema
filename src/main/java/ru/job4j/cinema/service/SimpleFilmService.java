@@ -11,6 +11,7 @@ import ru.job4j.cinema.repository.GenreRepository;
 import javax.annotation.concurrent.ThreadSafe;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 @Service
 @ThreadSafe
@@ -66,16 +67,18 @@ public class SimpleFilmService implements FilmService {
 
     @Override
     public Optional<FilmDto> findById(int id) {
-        var film = filmRepository.findById(id).get();
-        var genre = genreRepository.findById(film.getGenreId()).get();
-
-        return Optional.ofNullable(new FilmDto(film, genre));
+        var film = filmRepository.findById(id);
+        if (film.isEmpty()) {
+            return Optional.empty();
+        }
+        var genre = genreRepository.findById(film.get().getGenreId());
+        return Optional.ofNullable(new FilmDto(film.get(), genre.get()));
     }
 
     @Override
     public Collection<FilmDto> findAll() {
         var films = filmRepository.findAll();
-        var filmsDto = new ArrayList<FilmDto>();
+        Collection<FilmDto> filmsDto = new ArrayList<>();
         for (Film film : films) {
             filmsDto.add(new FilmDto(film, genreRepository.findById(film.getGenreId()).get()));
         }

@@ -22,7 +22,7 @@ public class Sql2oFilmRepository implements FilmRepository {
     public Film save(Film film) {
         try (var connection = sql2o.open()) {
             var sql = """
-                      INSERT INTO films(name, description, year, genre_id, minimal_age, duration_in_minutes, file_id)
+                      INSERT INTO films(name, description, "year", genre_id, minimal_age, duration_in_minutes, file_id)
                       VALUES (:name, :description, :year, :genreId, :minimalAge, :durationInMinutes, :fileId)
                       """;
             var query = connection.createQuery(sql, true)
@@ -54,7 +54,7 @@ public class Sql2oFilmRepository implements FilmRepository {
         try (var connection = sql2o.open()) {
             var sql = """
                     UPDATE films
-                    SET name = :name, description = :description, year = :year, genre_id = :genreId,
+                    SET name = :name, description = :description, "year" = :year, genre_id = :genreId,
                         minimal_age = :minimalAge, duration_in_minutes = :durationInMinutes, file_id = :fileId
                     WHERE id = :id
                     """;
@@ -62,11 +62,11 @@ public class Sql2oFilmRepository implements FilmRepository {
                     .addParameter("name", film.getName())
                     .addParameter("description", film.getDescription())
                     .addParameter("year", film.getYear())
-                    .addParameter("genreId", film.getId())
+                    .addParameter("genreId", film.getGenreId())
                     .addParameter("minimalAge", film.getMinimalAge())
                     .addParameter("durationInMinutes", film.getDurationInMinutes())
                     .addParameter("fileId", film.getFileId())
-                    .addParameter("Id", film.getId());
+                    .addParameter("id", film.getId());
             var affectedRows = query.executeUpdate().getResult();
             return affectedRows > 0;
         }

@@ -12,8 +12,6 @@ public interface FilmSessionService {
 
     boolean deleteById(int id);
 
-    boolean update(FilmSession filmSession);
-
     Optional<FilmSessionDto> findById(int id);
 
     Collection<FilmSessionDto> findAll();
