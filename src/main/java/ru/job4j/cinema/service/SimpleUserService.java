@@ -2,7 +2,8 @@ package ru.job4j.cinema.service;
 
 import org.springframework.stereotype.Service;
 import ru.job4j.cinema.model.User;
-import ru.job4j.cinema.repository.UserReposytory;
+import ru.job4j.cinema.repository.UserRepository;
+
 
 import javax.annotation.concurrent.ThreadSafe;
 import java.util.Collection;
@@ -10,31 +11,31 @@ import java.util.Optional;
 @Service
 @ThreadSafe
 public class SimpleUserService implements UserService {
-    private final UserReposytory userReposytory;
+    private final UserRepository userRepository;
 
 
-    public SimpleUserService(UserReposytory userReposytory) {
-        this.userReposytory = userReposytory;
+    public SimpleUserService(UserRepository userReposytory) {
+        this.userRepository = userReposytory;
     }
 
 
     @Override
     public Optional<User> save(User user) {
-        return userReposytory.save(user);
+        return userRepository.save(user);
     }
 
     @Override
     public boolean deleteById(int id) {
-        return userReposytory.deleteById(id);
+        return userRepository.deleteById(id);
     }
 
     @Override
     public Optional<User> findByEmailAndPassword(String email, String password) {
-        return userReposytory.findByEmailAndPassword(email, password);
+        return userRepository.findByEmailAndPassword(email, password);
     }
 
     @Override
     public Collection<User> findAll() {
-        return userReposytory.findAll();
+        return userRepository.findAll();
     }
 }
