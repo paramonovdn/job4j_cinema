@@ -1,16 +1,13 @@
-package service;
+package ru.job4j.cinema.service;
 
 import org.apache.commons.io.FileUtils;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import ru.job4j.cinema.repository.Sql2oFileRepository;
 import ru.job4j.cinema.configuration.DatasourceConfiguration;
 import ru.job4j.cinema.dto.FileDto;
-import ru.job4j.cinema.repository.Sql2oFileRepository;
-import ru.job4j.cinema.repository.Sql2oFileRepositoryTest;
-import ru.job4j.cinema.service.FileService;
-import ru.job4j.cinema.service.SimpleFileService;
 
 import java.io.File;
 import java.io.IOException;
@@ -32,7 +29,7 @@ public class SimpleFileServiceTest {
     @BeforeAll
     public static void initRepositories() throws Exception {
         var properties = new Properties();
-        try (var inputStream = Sql2oFileRepositoryTest.class.getClassLoader().getResourceAsStream("connection.properties")) {
+        try (var inputStream = SimpleFileServiceTest.class.getClassLoader().getResourceAsStream("connection.properties")) {
             properties.load(inputStream);
         }
         var url = properties.getProperty("datasource.url");

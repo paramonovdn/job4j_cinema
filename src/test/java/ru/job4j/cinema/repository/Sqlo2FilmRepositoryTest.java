@@ -9,7 +9,6 @@ import ru.job4j.cinema.model.File;
 import ru.job4j.cinema.model.Film;
 import ru.job4j.cinema.model.Genre;
 
-import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Properties;
 
@@ -32,7 +31,7 @@ public class Sqlo2FilmRepositoryTest {
     @BeforeAll
     public static void initRepositories() throws Exception {
         var properties = new Properties();
-        try (var inputStream = Sql2oFilmRepository.class.getClassLoader().getResourceAsStream("connection.properties")) {
+        try (var inputStream = Sqlo2FilmRepositoryTest.class.getClassLoader().getResourceAsStream("connection.properties")) {
             properties.load(inputStream);
         }
         var url = properties.getProperty("datasource.url");

@@ -1,7 +1,5 @@
-package service;
+package ru.job4j.cinema.service;
 
-import org.apache.commons.io.FileUtils;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -9,7 +7,6 @@ import ru.job4j.cinema.configuration.DatasourceConfiguration;
 import ru.job4j.cinema.dto.FilmSessionDto;
 import ru.job4j.cinema.model.*;
 import ru.job4j.cinema.repository.*;
-import ru.job4j.cinema.service.SimpleFilmSessionService;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -39,7 +36,7 @@ public class SimpleFilmSessionServiceTest {
     @BeforeAll
     public static void initRepositories() throws Exception {
         var properties = new Properties();
-        try (var inputStream = Sql2oFilmRepository.class.getClassLoader().getResourceAsStream("connection.properties")) {
+        try (var inputStream = SimpleFilmSessionServiceTest.class.getClassLoader().getResourceAsStream("connection.properties")) {
             properties.load(inputStream);
         }
         var url = properties.getProperty("datasource.url");
@@ -57,12 +54,16 @@ public class SimpleFilmSessionServiceTest {
         sql2oFilmSessionRepository = new Sql2oFilmSessionRepository(sql2o);
 
         simpleFilmSessionService = new SimpleFilmSessionService(sql2oFilmRepository, sql2oFilmSessionRepository, sql2oHallRepository);
-        System.out.println("===============================================" + sql2oFileRepository.findAll());
 
     }
 
     @AfterEach
     public void clear() throws IOException {
+        var filmSessions = sql2oFilmSessionRepository.findAll();
+        for (var filmSession : filmSessions) {
+            sql2oFilmSessionRepository.deleteById(filmSession.getId());
+
+        }
         var films = sql2oFilmRepository.findAll();
         for (var film : films) {
             sql2oFilmRepository.deleteById(film.getId());
@@ -74,10 +75,6 @@ public class SimpleFilmSessionServiceTest {
         var genres = sql2oGenreRepository.findAll();
         for (var genre : genres) {
             sql2oGenreRepository.deleteById(genre.getId());
-        }
-        var filmSessions = sql2oFilmSessionRepository.findAll();
-        for (var filmSession : filmSessions) {
-            sql2oFilmSessionRepository.deleteById(filmSession.getId());
         }
         var halls = sql2oHallRepository.findAll();
         for (var hall : halls) {
@@ -119,11 +116,15 @@ public class SimpleFilmSessionServiceTest {
         var savedFilmSession2 = simpleFilmSessionService.save(filmSession2);
         var savedFilmSession3 = simpleFilmSessionService.save(filmSession3);
 
+        var expectedFilmSessionDto1 = new FilmSessionDto(savedFilm, savedFilmSession1, savedHall);
+        var expectedFilmSessionDto2 = new FilmSessionDto(savedFilm, savedFilmSession2, savedHall);
+        var expectedFilmSessionDto3 = new FilmSessionDto(savedFilm, savedFilmSession3, savedHall);
+
         var result = simpleFilmSessionService.findAll();
         var expected = new ArrayList<>();
-        expected.add(savedFilmSession1);
-        expected.add(savedFilmSession2);
-        expected.add(savedFilmSession3);
+        expected.add(expectedFilmSessionDto1);
+        expected.add(expectedFilmSessionDto2);
+        expected.add(expectedFilmSessionDto3);
         assertThat(result).usingRecursiveComparison().isEqualTo(expected);
 
     }
