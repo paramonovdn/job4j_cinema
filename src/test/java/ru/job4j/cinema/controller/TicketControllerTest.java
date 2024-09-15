@@ -32,7 +32,7 @@ public class TicketControllerTest {
 
     @Test
     public void whenSomeExceptionThrownThenGetErrorPageWithMessage() {
-        var ticket = new  Ticket(1,1,1,1,1);
+        var ticket = new  Ticket(1, 1, 1, 1, 1);
         var expectedException = new RuntimeException("Для покупки билета необходимо войти на сайт.");
 
         var model = new ConcurrentModel();
@@ -45,7 +45,7 @@ public class TicketControllerTest {
 
     @Test
     public void whenSomeExceptionThrownThenGetErrorPageWithMessage2() {
-        var ticket = new  Ticket(1,1,1,1,1);
+        var ticket = new  Ticket(1, 1, 1, 1, 1);
         session.setAttribute("user", new User(1, "name", "email@mail.ru", "pass"));
         var expectedException = new RuntimeException("Не удалось приобрести билет на выбранное место. "
                 + "Вероятно оно уже занято. Перейдите на страницу бронирования билетов и попробуйте снова.");
@@ -62,7 +62,7 @@ public class TicketControllerTest {
 
     @Test
     public void whenSomeExceptionThrownThenGetErrorPageWithMessage3() {
-        var ticket = new  Ticket(1,1,1,1,1);
+        var ticket = new  Ticket(1, 1, 1, 1, 1);
         session.setAttribute("user", new User(1, "name", "email@mail.ru", "pass"));
         var expectedException = new RuntimeException("Вы успешно приобрели билет на- "
                 + ticket.getRowNumber() + " ряд, " + ticket.getPlaceNumber() + " место.");
