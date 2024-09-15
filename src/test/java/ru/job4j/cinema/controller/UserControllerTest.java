@@ -33,7 +33,7 @@ public class UserControllerTest {
 
     @Test
     public void whenRegisterTest() {
-        var user = new User(1,"Ivan","123@mail.ru","pass");
+        var user = new User(1, "Ivan", "123@mail.ru", "pass");
         var expectedUser = Optional.ofNullable(user);
         var userArgumentCaptor = ArgumentCaptor.forClass(User.class);
 
@@ -85,7 +85,7 @@ public class UserControllerTest {
 
     @Test
     public void whenLoginUserTest() {
-        var user = new User(1,"Ivan","123@mail.ru","pass");
+        var user = new User(1, "Ivan", "123@mail.ru", "pass");
         var expectedUser = Optional.ofNullable(user);
 
         when(userService.findByEmailAndPassword(any(), any())).thenReturn(expectedUser);
