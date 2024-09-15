@@ -172,7 +172,7 @@ public class SimpleTicketServiceTest {
 
     @Test
     public  void  whenSearchTicketThenGetEmptyOpyional() {
-        var findedTicket = simpleTicketService.findTicketByRowAndPlace(0,0,0);
+        var findedTicket = simpleTicketService.findTicketByRowAndPlace(0, 0, 0);
 
         assertThat(findedTicket).usingRecursiveComparison().isEqualTo(findedTicket);
     }

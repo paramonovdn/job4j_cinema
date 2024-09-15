@@ -169,7 +169,7 @@ public class Sql2oTicketRepositoryTest {
 
     @Test
     public  void  whenSearchTicketThenGetEmptyOpyional() {
-        var findedTicket = sql2oTicketRepository.findTicketByRowAndPlace(0,0,0);
+        var findedTicket = sql2oTicketRepository.findTicketByRowAndPlace(0, 0, 0);
 
         assertThat(findedTicket).usingRecursiveComparison().isEqualTo(findedTicket);
     }

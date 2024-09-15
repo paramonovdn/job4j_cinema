@@ -19,16 +19,9 @@ import javax.servlet.http.HttpSession;
 public class TicketController {
 
     private final TicketService ticketService;
-    private final FilmSessionRepository filmSessionRepository;
-    private final FilmRepository filmRepository;
-    private final HallService hallService;
 
-    public TicketController(TicketService ticketService, FilmSessionRepository filmSessionRepository, FilmRepository filmRepository,
-                            HallService hallService) {
+    public TicketController(TicketService ticketService) {
         this.ticketService = ticketService;
-        this.filmSessionRepository = filmSessionRepository;
-        this.filmRepository = filmRepository;
-        this.hallService = hallService;
     }
 
     @PostMapping("/buy")
