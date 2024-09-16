@@ -88,14 +88,14 @@ public class SimpleFilmSessionServiceTest {
         var file = sql2oFileRepository.save(new File("test2.jpg", "test2"));
         var genre = new Genre(1, "comedy1");
         var savedGenre = sql2oGenreRepository.save(genre);
-        var film = new Film(1, "film1", "description1", 2024, genre.getId(), 12, 120, file.getId());
+        var film = new Film(1, "film1", "description1", 2024, genre.getId(), 12, 120, file.get().getId());
         var savedFilm = sql2oFilmRepository.save(film);
         var hall = new Hall(1, "hall", 5, 5, "hall desc");
         var savedHall = sql2oHallRepository.save(hall);
-        var filmSession = new FilmSession(1, savedFilm.getId(), savedHall.getId(), LocalDateTime.of(2024, Month.SEPTEMBER, 9, 20, 00, 00), LocalDateTime.of(2024, Month.SEPTEMBER, 9, 22, 00, 00), 200);
+        var filmSession = new FilmSession(1, savedFilm.get().getId(), savedHall.get().getId(), LocalDateTime.of(2024, Month.SEPTEMBER, 9, 20, 00, 00), LocalDateTime.of(2024, Month.SEPTEMBER, 9, 22, 00, 00), 200);
         var savedFilmSession = simpleFilmSessionService.save(filmSession);
         var filmSessionDto = simpleFilmSessionService.findById(savedFilmSession.getId()).get();
-        var expectedFilmSessionDto = new FilmSessionDto(savedFilmSession.getId(), file.getId(), savedFilm.getName(), savedFilm.getDescription(), savedFilmSession.getStartTime(), savedFilmSession.getEndTime(), savedFilmSession.getPrice(), savedHall.getName(), savedHall.getRowCount(), savedHall.getPlaceCount());
+        var expectedFilmSessionDto = new FilmSessionDto(savedFilmSession.getId(), file.get().getId(), savedFilm.get().getName(), savedFilm.get().getDescription(), savedFilmSession.getStartTime(), savedFilmSession.getEndTime(), savedFilmSession.getPrice(), savedHall.get().getName(), savedHall.get().getRowCount(), savedHall.get().getPlaceCount());
 
         assertThat(filmSessionDto).usingRecursiveComparison().isEqualTo(expectedFilmSessionDto);
     }
@@ -105,20 +105,20 @@ public class SimpleFilmSessionServiceTest {
         var file = sql2oFileRepository.save(new File("test3.jpg", "test3"));
         var genre = new Genre(1, "comedy1");
         var savedGenre = sql2oGenreRepository.save(genre);
-        var film = new Film(1, "film1", "description1", 2024, genre.getId(), 12, 120, file.getId());
+        var film = new Film(1, "film1", "description1", 2024, genre.getId(), 12, 120, file.get().getId());
         var savedFilm = sql2oFilmRepository.save(film);
         var hall = new Hall(1, "hall", 5, 5, "hall desc");
         var savedHall = sql2oHallRepository.save(hall);
-        var filmSession1 = new FilmSession(1, savedFilm.getId(), savedHall.getId(), LocalDateTime.of(2024, Month.SEPTEMBER, 9, 20, 00, 00), LocalDateTime.of(2024, Month.SEPTEMBER, 9, 22, 00, 00), 200);
-        var filmSession2 = new FilmSession(2, savedFilm.getId(), savedHall.getId(), LocalDateTime.of(2022, Month.SEPTEMBER, 9, 20, 00, 00), LocalDateTime.of(2024, Month.SEPTEMBER, 9, 22, 00, 00), 250);
-        var filmSession3 = new FilmSession(3, savedFilm.getId(), savedHall.getId(), LocalDateTime.of(2021, Month.SEPTEMBER, 9, 20, 00, 00), LocalDateTime.of(2024, Month.SEPTEMBER, 9, 22, 00, 00), 300);
+        var filmSession1 = new FilmSession(1, savedFilm.get().getId(), savedHall.get().getId(), LocalDateTime.of(2024, Month.SEPTEMBER, 9, 20, 00, 00), LocalDateTime.of(2024, Month.SEPTEMBER, 9, 22, 00, 00), 200);
+        var filmSession2 = new FilmSession(2, savedFilm.get().getId(), savedHall.get().getId(), LocalDateTime.of(2022, Month.SEPTEMBER, 9, 20, 00, 00), LocalDateTime.of(2024, Month.SEPTEMBER, 9, 22, 00, 00), 250);
+        var filmSession3 = new FilmSession(3, savedFilm.get().getId(), savedHall.get().getId(), LocalDateTime.of(2021, Month.SEPTEMBER, 9, 20, 00, 00), LocalDateTime.of(2024, Month.SEPTEMBER, 9, 22, 00, 00), 300);
         var savedFilmSession1 = simpleFilmSessionService.save(filmSession1);
         var savedFilmSession2 = simpleFilmSessionService.save(filmSession2);
         var savedFilmSession3 = simpleFilmSessionService.save(filmSession3);
 
-        var expectedFilmSessionDto1 = new FilmSessionDto(savedFilm, savedFilmSession1, savedHall);
-        var expectedFilmSessionDto2 = new FilmSessionDto(savedFilm, savedFilmSession2, savedHall);
-        var expectedFilmSessionDto3 = new FilmSessionDto(savedFilm, savedFilmSession3, savedHall);
+        var expectedFilmSessionDto1 = new FilmSessionDto(savedFilm.get(), savedFilmSession1, savedHall.get());
+        var expectedFilmSessionDto2 = new FilmSessionDto(savedFilm.get(), savedFilmSession2, savedHall.get());
+        var expectedFilmSessionDto3 = new FilmSessionDto(savedFilm.get(), savedFilmSession3, savedHall.get());
 
         var result = simpleFilmSessionService.findAll();
         var expected = new ArrayList<>();
@@ -141,11 +141,11 @@ public class SimpleFilmSessionServiceTest {
         var file = sql2oFileRepository.save(new File("test4.jpg", "test4"));
         var genre = new Genre(1, "comedy1");
         var savedGenre = sql2oGenreRepository.save(genre);
-        var film = new Film(1, "film1", "description1", 2024, genre.getId(), 12, 120, file.getId());
+        var film = new Film(1, "film1", "description1", 2024, genre.getId(), 12, 120, file.get().getId());
         var savedFilm = sql2oFilmRepository.save(film);
         var hall = new Hall(1, "hall", 5, 5, "hall desc");
         var savedHall = sql2oHallRepository.save(hall);
-        var filmSession = new FilmSession(1, savedFilm.getId(), savedHall.getId(), LocalDateTime.of(2024, Month.SEPTEMBER, 9, 20, 00, 00), LocalDateTime.of(2024, Month.SEPTEMBER, 9, 22, 00, 00), 200);
+        var filmSession = new FilmSession(1, savedFilm.get().getId(), savedHall.get().getId(), LocalDateTime.of(2024, Month.SEPTEMBER, 9, 20, 00, 00), LocalDateTime.of(2024, Month.SEPTEMBER, 9, 22, 00, 00), 200);
         var savedFilmSession = simpleFilmSessionService.save(filmSession);
 
         var isDeleted = simpleFilmSessionService.deleteById(savedFilmSession.getId());

@@ -50,13 +50,12 @@ public class TicketControllerTest {
         var expectedException = new RuntimeException("Не удалось приобрести билет на выбранное место. "
                 + "Вероятно оно уже занято. Перейдите на страницу бронирования билетов и попробуйте снова.");
         when(ticketService.findTicketByRowAndPlace(ticket.getSessionId(), ticket.getRowNumber(), ticket.getPlaceNumber())).
-                thenThrow(expectedException);
-
+                thenReturn(Optional.ofNullable(ticket));
         var model = new ConcurrentModel();
         var view = ticketController.buyTicket(ticket, model, session);
         var actualExceptionMessage = model.getAttribute("message");
 
-        assertThat(view).isEqualTo("errors/404");
+        assertThat(view).isEqualTo("errors/409");
         assertThat(actualExceptionMessage).isEqualTo(expectedException.getMessage());
     }
 

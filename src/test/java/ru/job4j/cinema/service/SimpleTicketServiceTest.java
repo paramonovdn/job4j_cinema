@@ -98,10 +98,10 @@ public class SimpleTicketServiceTest {
     public void whenSaveThenGetSame() {
         var hall =  sql2oHallRepository.save(new Hall(1, "hall1", 5, 5, "small hall"));
         var genre = sql2oGenreRepository.save(new Genre(1, "comedy"));
-        var film = sql2oFilmRepository.save(new Film(0, "film1", "description1", 2024, genre.getId(), 12, 120, file.getId()));
-        var filmSession = sql2oFilmSessionRepository.save(new FilmSession(0, film.getId(), hall.getId(), LocalDateTime.of(2024, Month.SEPTEMBER, 9, 20, 00, 00), LocalDateTime.of(2024, Month.SEPTEMBER, 9, 22, 00, 00), 200));
+        var film = sql2oFilmRepository.save(new Film(0, "film1", "description1", 2024, genre.get().getId(), 12, 120, file.getId()));
+        var filmSession = sql2oFilmSessionRepository.save(new FilmSession(0, film.get().getId(), hall.get().getId(), LocalDateTime.of(2024, Month.SEPTEMBER, 9, 20, 00, 00), LocalDateTime.of(2024, Month.SEPTEMBER, 9, 22, 00, 00), 200));
         var user = sql2oUserRepository.save(new User(0, "name", "email@mail.ru", "pass")).get();
-        var savedTicket = simpleTicketService.save(new Ticket(0, filmSession.getId(), 5, 5, user.getId())).get();
+        var savedTicket = simpleTicketService.save(new Ticket(0, filmSession.get().getId(), 5, 5, user.getId())).get();
         var expectedTicket = simpleTicketService.findById(savedTicket.getId()).get();
 
         assertThat(savedTicket).usingRecursiveComparison().isEqualTo(expectedTicket);
@@ -111,12 +111,12 @@ public class SimpleTicketServiceTest {
     public void whenSaveThenGetSeveralSame() {
         var hall =  sql2oHallRepository.save(new Hall(1, "hall1", 5, 5, "small hall"));
         var genre = sql2oGenreRepository.save(new Genre(1, "comedy"));
-        var film = sql2oFilmRepository.save(new Film(0, "film1", "description1", 2024, genre.getId(), 12, 120, file.getId()));
-        var filmSession = sql2oFilmSessionRepository.save(new FilmSession(0, film.getId(), hall.getId(), LocalDateTime.of(2024, Month.SEPTEMBER, 9, 20, 00, 00), LocalDateTime.of(2024, Month.SEPTEMBER, 9, 22, 00, 00), 200));
+        var film = sql2oFilmRepository.save(new Film(0, "film1", "description1", 2024, genre.get().getId(), 12, 120, file.getId()));
+        var filmSession = sql2oFilmSessionRepository.save(new FilmSession(0, film.get().getId(), hall.get().getId(), LocalDateTime.of(2024, Month.SEPTEMBER, 9, 20, 00, 00), LocalDateTime.of(2024, Month.SEPTEMBER, 9, 22, 00, 00), 200));
         var user = sql2oUserRepository.save(new User(0, "name", "email@mail.ru", "pass")).get();
-        var savedTicket1 = simpleTicketService.save(new Ticket(1, filmSession.getId(), 5, 5, user.getId())).get();
-        var savedTicket2 = simpleTicketService.save(new Ticket(2, filmSession.getId(), 6, 6, user.getId())).get();
-        var savedTicket3 = simpleTicketService.save(new Ticket(3, filmSession.getId(), 7, 7, user.getId())).get();
+        var savedTicket1 = simpleTicketService.save(new Ticket(1, filmSession.get().getId(), 5, 5, user.getId())).get();
+        var savedTicket2 = simpleTicketService.save(new Ticket(2, filmSession.get().getId(), 6, 6, user.getId())).get();
+        var savedTicket3 = simpleTicketService.save(new Ticket(3, filmSession.get().getId(), 7, 7, user.getId())).get();
 
         var extectedTicket1 = simpleTicketService.findById(savedTicket1.getId()).get();
         var extectedTicket2 = simpleTicketService.findById(savedTicket2.getId()).get();
@@ -131,12 +131,12 @@ public class SimpleTicketServiceTest {
     public void whenDeleteThenGetSeveralSame() {
         var hall =  sql2oHallRepository.save(new Hall(1, "hall1", 5, 5, "small hall"));
         var genre = sql2oGenreRepository.save(new Genre(1, "comedy"));
-        var film = sql2oFilmRepository.save(new Film(0, "film1", "description1", 2024, genre.getId(), 12, 120, file.getId()));
-        var filmSession = sql2oFilmSessionRepository.save(new FilmSession(0, film.getId(), hall.getId(), LocalDateTime.of(2024, Month.SEPTEMBER, 9, 20, 00, 00), LocalDateTime.of(2024, Month.SEPTEMBER, 9, 22, 00, 00), 200));
+        var film = sql2oFilmRepository.save(new Film(0, "film1", "description1", 2024, genre.get().getId(), 12, 120, file.getId()));
+        var filmSession = sql2oFilmSessionRepository.save(new FilmSession(0, film.get().getId(), hall.get().getId(), LocalDateTime.of(2024, Month.SEPTEMBER, 9, 20, 00, 00), LocalDateTime.of(2024, Month.SEPTEMBER, 9, 22, 00, 00), 200));
         var user = sql2oUserRepository.save(new User(0, "name", "email@mail.ru", "pass")).get();
-        var savedTicket1 = simpleTicketService.save(new Ticket(1, filmSession.getId(), 5, 5, user.getId())).get();
-        var savedTicket2 = simpleTicketService.save(new Ticket(2, filmSession.getId(), 6, 6, user.getId())).get();
-        var savedTicket3 = simpleTicketService.save(new Ticket(3, filmSession.getId(), 7, 7, user.getId())).get();
+        var savedTicket1 = simpleTicketService.save(new Ticket(1, filmSession.get().getId(), 5, 5, user.getId())).get();
+        var savedTicket2 = simpleTicketService.save(new Ticket(2, filmSession.get().getId(), 6, 6, user.getId())).get();
+        var savedTicket3 = simpleTicketService.save(new Ticket(3, filmSession.get().getId(), 7, 7, user.getId())).get();
 
         assertThat(simpleTicketService.findAll()).isEqualTo(List.of(savedTicket1, savedTicket2, savedTicket3));
 
@@ -160,12 +160,12 @@ public class SimpleTicketServiceTest {
     public  void  whenSearchTicketThenGetSame() {
         var hall =  sql2oHallRepository.save(new Hall(1, "hall1", 5, 5, "small hall"));
         var genre = sql2oGenreRepository.save(new Genre(1, "comedy"));
-        var film = sql2oFilmRepository.save(new Film(0, "film1", "description1", 2024, genre.getId(), 12, 120, file.getId()));
-        var filmSession = sql2oFilmSessionRepository.save(new FilmSession(0, film.getId(), hall.getId(), LocalDateTime.of(2024, Month.SEPTEMBER, 9, 20, 00, 00), LocalDateTime.of(2024, Month.SEPTEMBER, 9, 22, 00, 00), 200));
+        var film = sql2oFilmRepository.save(new Film(0, "film1", "description1", 2024, genre.get().getId(), 12, 120, file.getId()));
+        var filmSession = sql2oFilmSessionRepository.save(new FilmSession(0, film.get().getId(), hall.get().getId(), LocalDateTime.of(2024, Month.SEPTEMBER, 9, 20, 00, 00), LocalDateTime.of(2024, Month.SEPTEMBER, 9, 22, 00, 00), 200));
         var user = sql2oUserRepository.save(new User(0, "name", "email@mail.ru", "pass")).get();
-        var savedTicket = simpleTicketService.save(new Ticket(0, filmSession.getId(), 5, 5, user.getId())).get();
+        var savedTicket = simpleTicketService.save(new Ticket(0, filmSession.get().getId(), 5, 5, user.getId())).get();
 
-        var findedTicket = simpleTicketService.findTicketByRowAndPlace(filmSession.getId(), savedTicket.getRowNumber(), savedTicket.getPlaceNumber()).get();
+        var findedTicket = simpleTicketService.findTicketByRowAndPlace(filmSession.get().getId(), savedTicket.getRowNumber(), savedTicket.getPlaceNumber()).get();
 
         assertThat(savedTicket).usingRecursiveComparison().isEqualTo(findedTicket);
     }
@@ -181,12 +181,12 @@ public class SimpleTicketServiceTest {
     public  void  whenSaveAndDeleteTicketThenGetEmpty() {
         var hall =  sql2oHallRepository.save(new Hall(1, "hall1", 5, 5, "small hall"));
         var genre = sql2oGenreRepository.save(new Genre(1, "comedy"));
-        var film = sql2oFilmRepository.save(new Film(0, "film1", "description1", 2024, genre.getId(), 12, 120, file.getId()));
-        var filmSession = sql2oFilmSessionRepository.save(new FilmSession(0, film.getId(), hall.getId(), LocalDateTime.of(2024, Month.SEPTEMBER, 9, 20, 00, 00), LocalDateTime.of(2024, Month.SEPTEMBER, 9, 22, 00, 00), 200));
+        var film = sql2oFilmRepository.save(new Film(0, "film1", "description1", 2024, genre.get().getId(), 12, 120, file.getId()));
+        var filmSession = sql2oFilmSessionRepository.save(new FilmSession(0, film.get().getId(), hall.get().getId(), LocalDateTime.of(2024, Month.SEPTEMBER, 9, 20, 00, 00), LocalDateTime.of(2024, Month.SEPTEMBER, 9, 22, 00, 00), 200));
         var user = sql2oUserRepository.save(new User(0, "name", "email@mail.ru", "pass")).get();
-        var savedTicket = simpleTicketService.save(new Ticket(0, filmSession.getId(), 5, 5, user.getId())).get();
+        var savedTicket = simpleTicketService.save(new Ticket(0, filmSession.get().getId(), 5, 5, user.getId())).get();
         simpleTicketService.deleteById(savedTicket.getId());
-        var findedTicket = simpleTicketService.findTicketByRowAndPlace(filmSession.getId(), savedTicket.getRowNumber(), savedTicket.getPlaceNumber());
+        var findedTicket = simpleTicketService.findTicketByRowAndPlace(filmSession.get().getId(), savedTicket.getRowNumber(), savedTicket.getPlaceNumber());
 
         assertThat(findedTicket).isEqualTo(empty());
     }

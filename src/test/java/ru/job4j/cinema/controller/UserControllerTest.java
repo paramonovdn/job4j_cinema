@@ -40,7 +40,7 @@ public class UserControllerTest {
         when(userService.save(userArgumentCaptor.capture())).thenReturn(expectedUser);
 
         var model = new ConcurrentModel();
-        var view = userController.register(model, user);
+        var view = userController.register(model, user, request);
         var actualUser = userArgumentCaptor.getValue();
 
         assertThat(view).isEqualTo("redirect:/index");
@@ -49,21 +49,23 @@ public class UserControllerTest {
 
     @Test
     public void whenRegisterTestTestWaitingErrorMessage() {
-        var expectedException = new RuntimeException("Пользователь с такой почтой уже существует");
-        when(userService.save(any())).thenThrow(expectedException);
+        var user = new User(1, "Ivan", "123@mail.ru", "pass");
+
+        var expectedException = new RuntimeException("Пользователь с такой почтой уже существует!");
+        when(userService.save(user)).thenReturn(Optional.empty());
 
         var model = new ConcurrentModel();
-        var view = userController.register(model, new User());
+        var view = userController.register(model, user, request);
         var actualExceptionMessage = model.getAttribute("message");
 
-        assertThat(view).isEqualTo("errors/404");
+        assertThat(view).isEqualTo("users/register");
         assertThat(actualExceptionMessage).isEqualTo(expectedException.getMessage());
     }
 
     @Test
     public void whenGetCreationPageTest() {
         var model = new ConcurrentModel();
-        var view = userController.getCreationPage(model, session);
+        var view = userController.getCreationPage();
 
         assertThat(view).isEqualTo("users/register");
     }
@@ -71,7 +73,7 @@ public class UserControllerTest {
     @Test
     public void whenGetLoginPageTest() {
         var model = new ConcurrentModel();
-        var view = userController.getLoginPage(model, session);
+        var view = userController.getLoginPage();
 
         assertThat(view).isEqualTo("users/login");
     }
@@ -100,19 +102,16 @@ public class UserControllerTest {
 
     @Test
     public void whenLoginUserTestWaitingErrorMessage() {
-        var expectedException = new RuntimeException("Почта или пароль введены неверно");
-        when(userService.findByEmailAndPassword(any(), any())).thenThrow(expectedException);
+        var user = new User(1, "Ivan", "123@mail.ru", "pass");
+        var expectedException = new RuntimeException("Почта или пароль введены неверно!");
+        when(userService.findByEmailAndPassword(user.getEmail(), user.getPassword())).thenReturn(Optional.empty());
 
         var model = new ConcurrentModel();
-        var view = userController.loginUser(new User(), model, request);
+        var view = userController.loginUser(user, model, request);
         var actualExceptionMessage = model.getAttribute("message");
 
-        assertThat(view).isEqualTo("errors/404");
+        assertThat(view).isEqualTo("users/login");
         assertThat(actualExceptionMessage).isEqualTo(expectedException.getMessage());
     }
-
-
-
-
 
 }

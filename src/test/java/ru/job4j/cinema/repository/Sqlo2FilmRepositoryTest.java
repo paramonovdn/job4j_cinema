@@ -73,8 +73,8 @@ public class Sqlo2FilmRepositoryTest {
         var genre = new Genre(1, "comedy");
         sql2oGenreRepository.save(genre);
         var film = sql2oFilmRepository.save(new Film(0, "film1", "description1", 2024, genre.getId(), 12, 120, file.getId()));
-        var savedCandidate = sql2oFilmRepository.findById(film.getId()).get();
-        assertThat(savedCandidate).usingRecursiveComparison().isEqualTo(film);
+        var savedCandidate = sql2oFilmRepository.findById(film.get().getId()).get();
+        assertThat(savedCandidate).usingRecursiveComparison().isEqualTo(film.get());
     }
 
     @Test
@@ -87,7 +87,7 @@ public class Sqlo2FilmRepositoryTest {
         var film3 = sql2oFilmRepository.save(new Film(3, "film3", "description3", 2022, genre.getId(), 16, 99, file.getId()));
 
         var result = sql2oFilmRepository.findAll();
-        assertThat(result).isEqualTo(List.of(film1, film2, film3));
+        assertThat(result).isEqualTo(List.of(film1.get(), film2.get(), film3.get()));
     }
 
     @Test
@@ -101,8 +101,8 @@ public class Sqlo2FilmRepositoryTest {
         var genre = new Genre(1, "comedy");
         sql2oGenreRepository.save(genre);
         var film = sql2oFilmRepository.save(new Film(0, "film1", "description1", 2024, genre.getId(), 12, 120, file.getId()));
-        var isDeleted = sql2oFilmRepository.deleteById(film.getId());
-        var savedFilm = sql2oFilmRepository.findById(film.getId());
+        var isDeleted = sql2oFilmRepository.deleteById(film.get().getId());
+        var savedFilm = sql2oFilmRepository.findById(film.get().getId());
         assertThat(isDeleted).isTrue();
         assertThat(savedFilm).isEqualTo(empty());
     }
@@ -117,7 +117,7 @@ public class Sqlo2FilmRepositoryTest {
         var genre = new Genre(1, "comedy");
         sql2oGenreRepository.save(genre);
         var film = sql2oFilmRepository.save(new Film(0, "film1", "description1", 2024, genre.getId(), 12, 120, file.getId()));
-        var updatedFilm = new Film(film.getId(), "updated film1", "updated description1", 2024, genre.getId(), 12, 120, file.getId());
+        var updatedFilm = new Film(film.get().getId(), "updated film1", "updated description1", 2024, genre.getId(), 12, 120, file.getId());
         var isUpdated = sql2oFilmRepository.update(updatedFilm);
         var savedFilm = sql2oFilmRepository.findById(updatedFilm.getId()).get();
         assertThat(isUpdated).isTrue();

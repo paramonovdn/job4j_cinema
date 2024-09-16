@@ -19,7 +19,7 @@ public class SimpleHallService implements HallService {
 
     @Override
     public Hall save(Hall hall) {
-        return hallRepository.save(hall);
+        return hallRepository.save(hall).get();
     }
 
     @Override

@@ -6,11 +6,11 @@ import java.util.Collection;
 import java.util.Optional;
 
 public interface FileRepository {
-    File save(File file);
+    Optional<File> save(File file);
 
     Optional<File> findById(int id);
 
-    void deleteById(int id);
+    boolean deleteById(int id);
 
     Collection<File> findAll();
 }

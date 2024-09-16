@@ -6,12 +6,13 @@ import org.springframework.stereotype.Repository;
 import org.sql2o.Sql2o;
 import ru.job4j.cinema.model.Ticket;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Optional;
 @Repository
 public class Sql2oTicketRepository implements TicketRepository {
 
-    private static final Logger LOG = LoggerFactory.getLogger(Sql2oUserRepository.class.getName());
+    private static final Logger LOG = LoggerFactory.getLogger(Sql2oTicketRepository.class.getName());
 
     private final Sql2o sql2o;
 
@@ -34,7 +35,7 @@ public class Sql2oTicketRepository implements TicketRepository {
             ticket.setId(generatedId);
             return Optional.of(ticket);
         } catch (Exception e) {
-            LOG.error("IOExeption in save() method Sql2oTicketRepository.class");
+            LOG.error(e.getMessage(), e);
         }
         return Optional.empty();
     }
@@ -46,7 +47,10 @@ public class Sql2oTicketRepository implements TicketRepository {
             query.addParameter("id", id);
             var result = query.executeUpdate().getResult() > 0;
             return result;
+        } catch (Exception e) {
+            LOG.error(e.getMessage(), e);
         }
+        return false;
     }
 
     @Override
@@ -56,7 +60,10 @@ public class Sql2oTicketRepository implements TicketRepository {
             query.addParameter("id", id);
             var ticket = query.setColumnMappings(Ticket.COLUMN_MAPPING).executeAndFetchFirst(Ticket.class);
             return Optional.ofNullable(ticket);
+        } catch (Exception e) {
+            LOG.error(e.getMessage(), e);
         }
+        return Optional.empty();
     }
 
     @Override
@@ -64,7 +71,10 @@ public class Sql2oTicketRepository implements TicketRepository {
         try (var connection = sql2o.open()) {
             var query = connection.createQuery("SELECT * FROM tickets");
             return query.setColumnMappings(Ticket.COLUMN_MAPPING).executeAndFetch(Ticket.class);
+        } catch (Exception e) {
+            LOG.error(e.getMessage(), e);
         }
+        return new ArrayList<Ticket>();
     }
 
     @Override
@@ -77,6 +87,9 @@ public class Sql2oTicketRepository implements TicketRepository {
                     .addParameter("placeNumber", placeNumber);
             var ticket = query.setColumnMappings(Ticket.COLUMN_MAPPING).executeAndFetchFirst(Ticket.class);
             return Optional.ofNullable(ticket);
+        } catch (Exception e) {
+            LOG.error(e.getMessage(), e);
         }
+        return Optional.empty();
     }
 }

@@ -18,7 +18,7 @@ public class SimpleGenreService implements GenreService {
 
     @Override
     public Genre save(Genre genre) {
-        return genreRepository.save(genre);
+        return genreRepository.save(genre).get();
     }
 
     @Override

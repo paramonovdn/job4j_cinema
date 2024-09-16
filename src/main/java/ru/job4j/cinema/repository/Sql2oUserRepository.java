@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 import org.sql2o.Sql2o;
 import ru.job4j.cinema.model.User;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Optional;
 @Repository
@@ -33,7 +34,7 @@ public class Sql2oUserRepository implements UserRepository {
             user.setId(generatedId);
             return Optional.of(user);
         } catch (Exception e) {
-            LOG.error("IOExeption in save() method Sql2oUserRepository.class");
+            LOG.error(e.getMessage(), e);
         }
         return Optional.empty();
     }
@@ -45,7 +46,10 @@ public class Sql2oUserRepository implements UserRepository {
             query.addParameter("id", id);
             var result = query.executeUpdate().getResult() > 0;
             return result;
+        } catch (Exception e) {
+            LOG.error(e.getMessage(), e);
         }
+        return false;
     }
 
     @Override
@@ -56,7 +60,10 @@ public class Sql2oUserRepository implements UserRepository {
             query.addParameter("email", email).addParameter("password", password);
             var user = query.setColumnMappings(User.COLUMN_MAPPING).executeAndFetchFirst(User.class);
             return Optional.ofNullable(user);
+        } catch (Exception e) {
+            LOG.error(e.getMessage(), e);
         }
+        return  Optional.empty();
     }
 
     @Override
@@ -64,6 +71,9 @@ public class Sql2oUserRepository implements UserRepository {
         try (var connection = sql2o.open()) {
             var query = connection.createQuery("SELECT * FROM users");
             return query.setColumnMappings(User.COLUMN_MAPPING).executeAndFetch(User.class);
+        } catch (Exception e) {
+            LOG.error(e.getMessage(), e);
         }
+        return new ArrayList<>();
     }
 }

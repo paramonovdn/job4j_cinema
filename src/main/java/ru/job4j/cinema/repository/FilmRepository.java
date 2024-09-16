@@ -6,7 +6,7 @@ import java.util.Collection;
 import java.util.Optional;
 
 public interface FilmRepository {
-    Film save(Film film);
+    Optional<Film> save(Film film);
 
     boolean deleteById(int id);
 

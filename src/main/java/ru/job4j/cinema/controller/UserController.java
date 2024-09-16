@@ -26,59 +26,39 @@ public class UserController {
     }
 
     @GetMapping("/register")
-    public String getCreationPage(Model model, HttpSession session) {
-        var user = (User) session.getAttribute("user");
-        if (user == null) {
-            user = new User();
-            user.setFullName("Гость");
-        }
-        model.addAttribute("user", user);
+    public String getCreationPage() {
         return "users/register";
     }
 
     @PostMapping("/register")
-    public String register(Model model, @ModelAttribute User user) {
-        try {
-            var userOptional = userService.save(user);
-            if (userOptional.isEmpty()) {
-                model.addAttribute("message", "Пользователь с такой почтой уже существует");
-                return "errors/404";
-            }
-            return "redirect:/index";
-        } catch (Exception exception) {
-            model.addAttribute("message", exception.getMessage());
-            return "errors/404";
+    public String register(Model model, @ModelAttribute User user, HttpServletRequest request) {
+        var userOptional = userService.save(user);
+        if (userOptional.isEmpty()) {
+            model.addAttribute("message", "Пользователь с такой почтой уже существует!");
+            return "users/register";
         }
+        var session = request.getSession();
+        session.setAttribute("user", userOptional.get());
+        return "redirect:/index";
     }
 
     @GetMapping("/login")
-    public String getLoginPage(Model model, HttpSession session) {
-        var user = (User) session.getAttribute("user");
-        if (user == null) {
-            user = new User();
-            user.setFullName("Гость");
-        }
-        model.addAttribute("user", user);
+    public String getLoginPage() {
         return "users/login";
     }
 
 
-
     @PostMapping("/login")
     public String loginUser(@ModelAttribute User user, Model model, HttpServletRequest request) {
-        try {
-            var userOptional = userService.findByEmailAndPassword(user.getEmail(), user.getPassword());
-            if (userOptional.isEmpty()) {
-                model.addAttribute("error", "Почта или пароль введены неверно");
-                return "users/login";
-            }
-            var session = request.getSession();
-            session.setAttribute("user", userOptional.get());
-            return "redirect:/index";
-        } catch (Exception exception) {
-            model.addAttribute("message", exception.getMessage());
-            return "errors/404";
+        var userOptional = userService.findByEmailAndPassword(user.getEmail(), user.getPassword());
+        if (userOptional.isEmpty()) {
+            model.addAttribute("message", "Почта или пароль введены неверно!");
+            return "users/login";
         }
+        var session = request.getSession();
+        session.setAttribute("user", userOptional.get());
+        return "redirect:/index";
+
     }
 
     @GetMapping("/logout")

@@ -30,7 +30,7 @@ public class SimpleFilmService implements FilmService {
     @Override
     public Film save(Film film, FileDto image) {
         saveNewFile(film, image);
-        return filmRepository.save(film);
+        return filmRepository.save(film).get();
     }
 
     private void saveNewFile(Film film, FileDto image) {

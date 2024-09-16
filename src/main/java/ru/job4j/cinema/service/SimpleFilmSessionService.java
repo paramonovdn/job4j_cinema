@@ -26,7 +26,7 @@ public class SimpleFilmSessionService implements FilmSessionService {
 
     @Override
     public FilmSession save(FilmSession filmSession) {
-        return filmSessionRepository.save(filmSession);
+        return filmSessionRepository.save(filmSession).get();
     }
 
     @Override

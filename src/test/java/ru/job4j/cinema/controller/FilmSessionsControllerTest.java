@@ -53,7 +53,7 @@ public class FilmSessionsControllerTest {
         when(filmSessionService.findById(1)).thenReturn(expectedFilmSession);
 
         var model = new ConcurrentModel();
-        var view = filmSessionController.getById(model, 1, session);
+        var view = filmSessionController.getById(model, 1);
         var actualFilmSession = model.getAttribute("filmsessiondto");
 
         assertThat(view).isEqualTo("filmsessions/one");
@@ -65,10 +65,10 @@ public class FilmSessionsControllerTest {
         var expectedException = new RuntimeException("Киносеанс с указанным идентификатором не найден.");
 
         var model = new ConcurrentModel();
-        var view = filmSessionController.getById(model, 0, session);
+        var view = filmSessionController.getById(model, 0);
         var actualExceptionMessage = model.getAttribute("message");
 
-        assertThat(view).isEqualTo("errors/404");
+        assertThat(view).isEqualTo("errors/409");
         assertThat(actualExceptionMessage).isEqualTo(expectedException.getMessage());
     }
 

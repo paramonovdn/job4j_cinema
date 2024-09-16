@@ -6,12 +6,13 @@ import org.springframework.stereotype.Repository;
 import org.sql2o.Sql2o;
 import ru.job4j.cinema.model.Genre;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Optional;
 @Repository
 public class Sql2oGenreRepository implements GenreRepository {
 
-    private static final Logger LOG = LoggerFactory.getLogger(Sql2oUserRepository.class.getName());
+    private static final Logger LOG = LoggerFactory.getLogger(Sql2oGenreRepository.class.getName());
 
     private final Sql2o sql2o;
 
@@ -21,7 +22,7 @@ public class Sql2oGenreRepository implements GenreRepository {
 
 
     @Override
-    public Genre save(Genre genre) {
+    public Optional<Genre> save(Genre genre) {
         try (var connection = sql2o.open()) {
             var sql = """
                       INSERT INTO genres(name)
@@ -31,8 +32,11 @@ public class Sql2oGenreRepository implements GenreRepository {
                     .addParameter("name", genre.getName());
             int generatedId = query.executeUpdate().getKey(Integer.class);
             genre.setId(generatedId);
-            return genre;
+            return Optional.ofNullable(genre);
+        } catch (Exception e) {
+            LOG.error(e.getMessage(), e);
         }
+        return Optional.empty();
     }
 
     @Override
@@ -42,7 +46,10 @@ public class Sql2oGenreRepository implements GenreRepository {
             query.addParameter("id", id);
             var result = query.executeUpdate().getResult() > 0;
             return result;
+        } catch (Exception e) {
+            LOG.error(e.getMessage(), e);
         }
+        return false;
     }
 
     @Override
@@ -52,7 +59,10 @@ public class Sql2oGenreRepository implements GenreRepository {
             query.addParameter("id", id);
             var genre = query.addParameter("id", id).executeAndFetchFirst(Genre.class);
             return Optional.ofNullable(genre);
+        } catch (Exception e) {
+            LOG.error(e.getMessage(), e);
         }
+        return Optional.empty();
     }
 
     @Override
@@ -60,6 +70,9 @@ public class Sql2oGenreRepository implements GenreRepository {
         try (var connection = sql2o.open()) {
             var query = connection.createQuery("SELECT * FROM genres");
             return query.executeAndFetch(Genre.class);
+        } catch (Exception e) {
+            LOG.error(e.getMessage(), e);
         }
+        return new ArrayList<Genre>();
     }
 }

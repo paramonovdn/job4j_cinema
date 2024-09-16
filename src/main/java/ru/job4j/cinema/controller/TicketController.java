@@ -26,29 +26,24 @@ public class TicketController {
 
     @PostMapping("/buy")
     public String buyTicket(@ModelAttribute Ticket ticket, Model model, HttpSession session) {
-        try {
-            var user = (User) session.getAttribute("user");
-            if (user == null) {
-                user = new User();
-                user.setFullName("Гость");
-                model.addAttribute("error", "Для покупки билета необходимо войти на сайт.");
-                return "users/login";
-            }
-            model.addAttribute("user", user);
-            var ticketOptional = ticketService.findTicketByRowAndPlace(ticket.getSessionId(), ticket.getRowNumber(),
-                    ticket.getPlaceNumber());
-            if (!ticketOptional.isEmpty()) {
-                model.addAttribute("message", "Не удалось приобрести билет на выбранное место. "
-                        + "Вероятно оно уже занято. Перейдите на страницу бронирования билетов и попробуйте снова.");
-                return "errors/404";
-            }
-            ticketService.save(ticket);
-            model.addAttribute("message", "Вы успешно приобрели билет на- "
-                    + ticket.getRowNumber() + " ряд, " + ticket.getPlaceNumber() + " место.");
-            return "errors/200";
-        } catch (Exception exception) {
-            model.addAttribute("message", exception.getMessage());
-            return "errors/404";
+        var user = (User) session.getAttribute("user");
+        if (user == null) {
+            user = new User();
+            user.setFullName("Гость");
+            model.addAttribute("error", "Для покупки билета необходимо войти на сайт.");
+            return "users/login";
         }
+        model.addAttribute("user", user);
+        var ticketOptional = ticketService.findTicketByRowAndPlace(ticket.getSessionId(), ticket.getRowNumber(),
+                ticket.getPlaceNumber());
+        if (!ticketOptional.isEmpty()) {
+            model.addAttribute("message", "Не удалось приобрести билет на выбранное место. "
+                    + "Вероятно оно уже занято. Перейдите на страницу бронирования билетов и попробуйте снова.");
+            return "errors/409";
+        }
+        ticketService.save(ticket);
+        model.addAttribute("message", "Вы успешно приобрели билет на- "
+                + ticket.getRowNumber() + " ряд, " + ticket.getPlaceNumber() + " место.");
+        return "errors/200";
     }
 }

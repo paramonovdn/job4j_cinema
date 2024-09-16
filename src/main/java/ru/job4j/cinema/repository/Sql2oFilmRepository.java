@@ -6,12 +6,13 @@ import org.springframework.stereotype.Repository;
 import org.sql2o.Sql2o;
 import ru.job4j.cinema.model.Film;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Optional;
 @Repository
 public class Sql2oFilmRepository implements FilmRepository {
 
-    private static final Logger LOG = LoggerFactory.getLogger(Sql2oUserRepository.class.getName());
+    private static final Logger LOG = LoggerFactory.getLogger(Sql2oFilmRepository.class.getName());
 
     private final Sql2o sql2o;
 
@@ -19,7 +20,7 @@ public class Sql2oFilmRepository implements FilmRepository {
         this.sql2o = sql2o;
     }
     @Override
-    public Film save(Film film) {
+    public Optional<Film> save(Film film) {
         try (var connection = sql2o.open()) {
             var sql = """
                       INSERT INTO films(name, description, "year", genre_id, minimal_age, duration_in_minutes, file_id)
@@ -35,8 +36,11 @@ public class Sql2oFilmRepository implements FilmRepository {
                     .addParameter("fileId", film.getFileId());
             int generatedId = query.executeUpdate().getKey(Integer.class);
             film.setId(generatedId);
-            return film;
+            return Optional.ofNullable(film);
+        } catch (Exception e) {
+            LOG.error(e.getMessage(), e);
         }
+        return Optional.empty();
     }
 
     @Override
@@ -46,7 +50,10 @@ public class Sql2oFilmRepository implements FilmRepository {
             query.addParameter("id", id);
             var result = query.executeUpdate().getResult() > 0;
             return result;
+        } catch (Exception e) {
+            LOG.error(e.getMessage(), e);
         }
+        return false;
     }
 
     @Override
@@ -69,7 +76,10 @@ public class Sql2oFilmRepository implements FilmRepository {
                     .addParameter("id", film.getId());
             var affectedRows = query.executeUpdate().getResult();
             return affectedRows > 0;
+        } catch (Exception e) {
+            LOG.error(e.getMessage(), e);
         }
+        return false;
     }
 
     @Override
@@ -79,7 +89,10 @@ public class Sql2oFilmRepository implements FilmRepository {
             query.addParameter("id", id);
             var film = query.setColumnMappings(Film.COLUMN_MAPPING).executeAndFetchFirst(Film.class);
             return Optional.ofNullable(film);
+        } catch (Exception e) {
+            LOG.error(e.getMessage(), e);
         }
+        return Optional.empty();
     }
 
     @Override
@@ -87,6 +100,9 @@ public class Sql2oFilmRepository implements FilmRepository {
         try (var connection = sql2o.open()) {
             var query = connection.createQuery("SELECT * FROM films");
             return query.setColumnMappings(Film.COLUMN_MAPPING).executeAndFetch(Film.class);
+        } catch (Exception e) {
+            LOG.error(e.getMessage(), e);
         }
+        return new ArrayList<Film>();
     }
 }
